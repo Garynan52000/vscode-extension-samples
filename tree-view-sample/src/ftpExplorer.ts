@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
-// import * as Client from 'ftp';
+import * as Client from 'ftp';
 import * as ftp from 'basic-ftp';
 import { basename, dirname, join } from 'path';
+import * as fs from 'fs';
 
 interface IEntry {
 	name: string;
@@ -44,9 +45,10 @@ export class FtpModel {
 		
 		return new Promise((c, e) => {
 			client.access({
-				host: "myftpserver.com",
-				user: "very",
-				password: "password"
+				host: this.host,
+				user: this.user,
+				password: this.password,
+				port: this.port
 			}).then(() => {
 				c(client);
 			}).catch((error) => {
@@ -139,14 +141,36 @@ export class FtpModel {
 		});
 	}
 
+	// public getContent(resource: vscode.Uri): Thenable<string> {
+	// 	return this.connect().then(client => {
+	// 		return new Promise((c, e) => {
+	// 			client.get(resource.path.substr(2), (err, stream) => {
+	// 				if (err) {
+	// 					return e(err);
+	// 				}
+
+	// 				let string = '';
+	// 				stream.on('data', function (buffer) {
+	// 					if (buffer) {
+	// 						const part = buffer.toString();
+	// 						string += part;
+	// 					}
+	// 				});
+
+	// 				stream.on('end', function () {
+	// 					client.end();
+	// 					c(string);
+	// 				});
+	// 			});
+	// 		});
+	// 	});
+	// }
 	public getContent(resource: vscode.Uri): Thenable<string> {
 		return this.connect().then(client => {
 			return new Promise((c, e) => {
-				client.get(resource.path.substr(2), (err, stream) => {
-					if (err) {
-						return e(err);
-					}
-
+				const stream = fs.createWriteStream('./a.txt');
+				client.downloadTo(stream, encodeURIComponent(resource.path.substring(2)))
+					.catch(e);
 					let string = '';
 					stream.on('data', function (buffer) {
 						if (buffer) {
@@ -156,10 +180,9 @@ export class FtpModel {
 					});
 
 					stream.on('end', function () {
-						client.end();
+						client.close();
 						c(string);
 					});
-				});
 			});
 		});
 	}
