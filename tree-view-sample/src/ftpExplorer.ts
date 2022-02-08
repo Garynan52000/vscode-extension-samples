@@ -15,7 +15,7 @@ export interface FtpNode {
 }
 
 export class FtpModel {
-	constructor(readonly host: string, private user: string, private password: string) {
+	constructor(readonly host: string, private user: string, private password: string, private port: number = 21) {
 	}
 
 	public connect(): Thenable<Client> {
@@ -31,6 +31,7 @@ export class FtpModel {
 
 			client.connect({
 				host: this.host,
+				port: this.port,
 				username: this.user,
 				password: this.password
 			});
@@ -153,7 +154,9 @@ export class FtpExplorer {
 
 	constructor(context: vscode.ExtensionContext) {
 		/* Please note that login information is hardcoded only for this example purpose and recommended not to do it in general. */
-		const ftpModel = new FtpModel('mirror.switch.ch', 'anonymous', 'anonymous@anonymous.de');
+		// const ftpModel = new FtpModel('mirror.switch.ch', 'anonymous', 'anonymous@anonymous.de');
+		const ftpModel = new FtpModel('192.168.11.141', '9377_psd', '9377_psd');
+		// const ftpModel = new FtpModel('58.215.143.4', 'yylgn', 'Yylgn123!$&', 32100);
 		const treeDataProvider = new FtpTreeDataProvider(ftpModel);
 		context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider('ftp', treeDataProvider));
 
