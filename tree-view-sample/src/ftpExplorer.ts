@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import * as Client from 'ftp';
+// import * as Client from 'ftp';
+import * as ftp from 'basic-ftp';
 import { basename, dirname, join } from 'path';
 
 interface IEntry {
@@ -18,53 +19,107 @@ export class FtpModel {
 	constructor(readonly host: string, private user: string, private password: string, private port: number = 21) {
 	}
 
-	public connect(): Thenable<Client> {
+	// public connect(): Thenable<Client> {
+	// 	return new Promise((c, e) => {
+	// 		const client = new Client();
+	// 		client.on('ready', () => {
+	// 			c(client);
+	// 		});
+
+	// 		client.on('error', error => {
+	// 			e('Error while connecting: ' + error.message);
+	// 		});
+
+	// 		client.connect({
+	// 			host: this.host,
+	// 			port: this.port,
+	// 			username: this.user,
+	// 			password: this.password
+	// 		});
+	// 	});
+	// }
+	public connect(): Thenable<ftp.Client> {
+		const client = new ftp.Client();
+		client.ftp.verbose = true;
+		
 		return new Promise((c, e) => {
-			const client = new Client();
-			client.on('ready', () => {
+			client.access({
+				host: "myftpserver.com",
+				user: "very",
+				password: "password"
+			}).then(() => {
 				c(client);
-			});
-
-			client.on('error', error => {
+			}).catch((error) => {
 				e('Error while connecting: ' + error.message);
-			});
-
-			client.connect({
-				host: this.host,
-				port: this.port,
-				username: this.user,
-				password: this.password
 			});
 		});
 	}
 
+	// public get roots(): Thenable<FtpNode[]> {
+	// 	return this.connect().then(client => {
+	// 		return new Promise((c, e) => {
+	// 			client.list((err, list) => {
+	// 				if (err) {
+	// 					return e(err);
+	// 				}
+
+	// 				client.end();
+
+	// 				return c(this.sort(list.map(entry => {
+	// 					entry.name = Buffer.from(entry.name, 'binary').toString('ASCII');
+	// 					// item.name = Buffer.from(item.name, 'binary').toString('utf8') // 若设置了传输数据类型为ASCII
+	// 					return { resource: vscode.Uri.parse(`ftp://${this.host}///${entry.name}`), isDirectory: entry.type === 'd' };
+	// 				})));
+	// 			});
+	// 		});
+	// 	});
+	// }
 	public get roots(): Thenable<FtpNode[]> {
 		return this.connect().then(client => {
 			return new Promise((c, e) => {
-				client.list((err, list) => {
-					if (err) {
-						return e(err);
-					}
-
-					client.end();
-
-					return c(this.sort(list.map(entry => ({ resource: vscode.Uri.parse(`ftp://${this.host}///${entry.name}`), isDirectory: entry.type === 'd' }))));
+				client.list().then((list) => {
+					client.close();
+					c(this.sort(list.map(entry => {
+						return { resource: vscode.Uri.parse(`ftp://${this.host}///${entry.name}`), isDirectory: entry.isDirectory };
+					})));
+				}).catch((err) => {
+					e(err);
 				});
 			});
 		});
 	}
 
+	// public getChildren(node: FtpNode): Thenable<FtpNode[]> {
+	// 	return this.connect().then(client => {
+	// 		return new Promise((c, e) => {
+	// 			client.list(node.resource.fsPath, (err, list) => {
+	// 				if (err) {
+	// 					return e(err);
+	// 				}
+
+	// 				client.end();
+
+	// 				return c(this.sort(list.map(entry => {
+	// 					entry.name = Buffer.from(entry.name, 'binary').toString('utf8');
+	// 					// item.name = Buffer.from(item.name, 'binary').toString('utf8') // 若设置了传输数据类型为ASCII
+	// 					return { resource: vscode.Uri.parse(`${node.resource.fsPath}/${entry.name}`), isDirectory: entry.type === 'd' };
+	// 				})));
+	// 			});
+	// 		});
+	// 	});
+	// }
 	public getChildren(node: FtpNode): Thenable<FtpNode[]> {
 		return this.connect().then(client => {
 			return new Promise((c, e) => {
-				client.list(node.resource.fsPath, (err, list) => {
-					if (err) {
-						return e(err);
-					}
-
-					client.end();
-
-					return c(this.sort(list.map(entry => ({ resource: vscode.Uri.parse(`${node.resource.fsPath}/${entry.name}`), isDirectory: entry.type === 'd' }))));
+				client.list(node.resource.fsPath).then((list) => {
+					client.close();
+					c(this.sort(list.map(entry => {
+						entry.name = Buffer.from(entry.name, 'binary').toString('utf8');
+						// item.name = Buffer.from(item.name, 'binary').toString('utf8') // 若设置了传输数据类型为ASCII
+						return { resource: vscode.Uri.parse(`${node.resource.fsPath}/${entry.name}`), isDirectory: entry.isDirectory };
+					})));
+				}).catch((err) => {
+					e(err);
 				});
 			});
 		});
