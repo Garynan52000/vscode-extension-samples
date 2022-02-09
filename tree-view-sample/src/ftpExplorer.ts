@@ -168,21 +168,22 @@ export class FtpModel {
 	public getContent(resource: vscode.Uri): Thenable<string> {
 		return this.connect().then(client => {
 			return new Promise((c, e) => {
-				const stream = fs.createWriteStream('./a.txt');
-				client.downloadTo(stream, encodeURIComponent(resource.path.substring(2)))
+				const stream = fs.createWriteStream('/a.txt');
+				client.downloadTo(stream, resource.path.substring(2))
+					.then((res) => {
+						let string = '';
+						stream.on('open', function (buffer) {
+							if (buffer) {
+								const part = buffer.toString();
+								string += part;
+							}
+						});
+						stream.on('close', function () {
+							client.close();
+							c(string);
+						});
+					})
 					.catch(e);
-					let string = '';
-					stream.on('data', function (buffer) {
-						if (buffer) {
-							const part = buffer.toString();
-							string += part;
-						}
-					});
-
-					stream.on('end', function () {
-						client.close();
-						c(string);
-					});
 			});
 		});
 	}
