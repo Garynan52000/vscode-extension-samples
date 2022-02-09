@@ -60,9 +60,9 @@ class CatCodingPanel {
 	private _disposables: vscode.Disposable[] = [];
 
 	public static createOrShow(extensionUri: vscode.Uri) {
-		const column = vscode.window.activeTextEditor
+		const column = vscode.window.activeTextEditor && vscode.window.activeTextEditor.viewColumn !== undefined
 			? vscode.window.activeTextEditor.viewColumn
-			: undefined;
+			: vscode.ViewColumn.One;
 
 		// If we already have a panel, show it.
 		if (CatCodingPanel.currentPanel) {
@@ -74,7 +74,7 @@ class CatCodingPanel {
 		const panel = vscode.window.createWebviewPanel(
 			CatCodingPanel.viewType,
 			'Cat Coding',
-			column || vscode.ViewColumn.One,
+			column,
 			getWebviewOptions(extensionUri),
 		);
 
