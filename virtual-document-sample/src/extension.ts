@@ -17,7 +17,9 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
 
 		provideTextDocumentContent(uri: vscode.Uri): string {
 			// simply invoke cowsay, use uri-path as text
-			return cowsay.say({ text: uri.path });
+			const cawsay = cowsay.say({ text: uri.path });
+			return cawsay;
+			// return 'hello world';
 		}
 	};
 	subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(myScheme, myProvider));
