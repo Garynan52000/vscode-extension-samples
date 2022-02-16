@@ -277,6 +277,7 @@ export class PawDrawEditorProvider implements vscode.CustomEditorProvider<PawDra
 		return document;
 	}
 
+	// 实现
 	async resolveCustomEditor(
 		document: PawDrawDocument,
 		webviewPanel: vscode.WebviewPanel,
@@ -314,20 +315,25 @@ export class PawDrawEditorProvider implements vscode.CustomEditorProvider<PawDra
 	}
 
 	private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<PawDrawDocument>>();
+	// 实现
 	public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument.event;
 
+	// 实现
 	public saveCustomDocument(document: PawDrawDocument, cancellation: vscode.CancellationToken): Thenable<void> {
 		return document.save(cancellation);
 	}
 
+	// 实现
 	public saveCustomDocumentAs(document: PawDrawDocument, destination: vscode.Uri, cancellation: vscode.CancellationToken): Thenable<void> {
 		return document.saveAs(destination, cancellation);
 	}
 
+	// 实现
 	public revertCustomDocument(document: PawDrawDocument, cancellation: vscode.CancellationToken): Thenable<void> {
 		return document.revert(cancellation);
 	}
 
+	// 实现
 	public backupCustomDocument(document: PawDrawDocument, context: vscode.CustomDocumentBackupContext, cancellation: vscode.CancellationToken): Thenable<vscode.CustomDocumentBackup> {
 		return document.backup(context.destination, cancellation);
 	}
