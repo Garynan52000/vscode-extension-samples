@@ -2,6 +2,10 @@
 
 VSCode 拓展程序学习线路，帮助引导学习方向。本文主要内容包括快速起步以及增强能力清单。后续会持续更新更多的学习内容。
 
+<br>
+
+> [官方文档](https://code.visualstudio.com/api)
+
 ## 快速起步
 
 #### 安装命令行脚手架工具
@@ -58,7 +62,7 @@ yo code
 
 <br>
 
-- Extension Manifest : 每个 VS Code 扩展都必须有一个 package.json 作为其(扩展清单)[https://code.visualstudio.com/api/references/extension-manifest]。
+- Extension Manifest : 每个 VS Code 扩展都必须有一个 package.json 作为其[扩展清单](https://code.visualstudio.com/api/references/extension-manifest)。
 - Extension Entry File: 入口文件
 ```
 // The module 'vscode' contains the VS Code extensibility API
@@ -91,6 +95,10 @@ export function deactivate() {}
 
 ## 增强能力
 
+#### Extension Guidelines 编辑器的构造说明
+
+- [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+
 #### Extension Capabilities 扩展能力
 
 - [VS Code API](https://code.visualstudio.com/api/references/vscode-api)
@@ -101,10 +109,6 @@ export function deactivate() {}
 - [Extension Guide](https://code.visualstudio.com/api/extension-guides/overview)
 - [vscode-extension-samples](https://github.com/microsoft/vscode-extension-samples)
 
-#### Extension Guidelines 拓展程序开发纲领
-
-- [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
 #### Testing and Publishing 测试和发布
 
 - 如何为您的扩展添加[集成测试](https://code.visualstudio.com/api/working-with-extensions/testing-extension)
@@ -113,8 +117,10 @@ export function deactivate() {}
 
 ## 附录
 
+都看到这里了，还不点个赞吗？
+<br>
 消化官方内容不易，希望对你有所帮助。
 <br>
 后续会持续更新相关的学习内容，并将最新的文档链接附到此处。
 
-- [vs-code-extensions-learning-guide.md](https://juejin.cn/post/7067825724773629989/)
+- [VSCode 的构造及部件说明](https://juejin.cn/post/7068193667369926670)
