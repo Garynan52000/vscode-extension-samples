@@ -123,4 +123,5 @@ export function deactivate() {}
 <br>
 后续会持续更新相关的学习内容，并将最新的文档链接附到此处。
 
-- [VSCode 的构造及部件说明](https://juejin.cn/post/7068193667369926670)
+- [VSCode 的构造及部件说明](https://juejin.cn/post/7068193667369926670/)
+- [VSCode 拓展清单中的贡献点](https://juejin.cn/post/7069682837955280926/)
