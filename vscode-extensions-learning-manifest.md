@@ -351,6 +351,61 @@
 
 ## 结合扩展贡献
 
+`yo code` 生成器让您轻松打包 TextMate 主题，着色器和代码片段并创建新的扩展。当生成器运行时，它会为每个选项创建一个完整的独立扩展包。但是，拥有一个组合多个贡献的单个扩展通常更方便。例如，如果您要添加对一种新语言的支持，您希望为用户提供带有着色的语言定义以及片段，甚至可能是调试支持。
+
+<br>
+
+要合并扩展贡献，请编辑现有扩展清单 `package.json` 并添加新贡献和关联文件。
+
+<br>
+
+下面是一个扩展清单，其中包括 LaTex 语言定义（语言标识符和文件扩展名）、着色（语法）和片段。
+
+<br>
+
+```
+{
+  "name": "language-latex",
+  "description": "LaTex Language Support",
+  "version": "0.0.1",
+  "publisher": "someone",
+  "engines": {
+    "vscode": "0.10.x"
+  },
+  "categories": ["Programming Languages", "Snippets"],
+  "contributes": {
+    "languages": [
+      {
+        "id": "latex",
+        "aliases": ["LaTeX", "latex"],
+        "extensions": [".tex"]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "latex",
+        "scopeName": "text.tex.latex",
+        "path": "./syntaxes/latex.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "latex",
+        "path": "./snippets/snippets.json"
+      }
+    ]
+  }
+}
+```
+
+<br>
+
+请注意，扩展清单 `categories` 属性现在包括 `Programming Languages` 和 `Snippets`，以便在市场上轻松发现和过滤。
+
+<br>
+
+> 提示：确保您的合并贡献使用相同的标识符。在上面的示例中，所有三个贡献都使用 “latex” 作为语言标识符。这让 VS Code 知道着色器（`grammars`）和片段用于 LaTeX 语言，并且在编辑 LaTeX 文件时将处于活动状态。
+
 ## 附录
 
 都看到这里了，还不点个赞吗？
