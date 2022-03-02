@@ -406,6 +406,87 @@
 
 > 提示：确保您的合并贡献使用相同的标识符。在上面的示例中，所有三个贡献都使用 “latex” 作为语言标识符。这让 VS Code 知道着色器（`grammars`）和片段用于 LaTeX 语言，并且在编辑 LaTeX 文件时将处于活动状态。
 
+## Extension Packs
+
+您可以在**扩展包**中将单独的扩展捆绑在一起。扩展包是一组将一起安装的扩展。这可以轻松与其他用户共享您最喜欢的扩展，或为特定场景（如 PHP 开发）创建一组扩展，以帮助 PHP 开发人员快速开始使用 VS Code。
+
+<br>
+
+扩展包使用 `package.json` 文件中的 `extensionPack` 属性捆绑其他扩展。
+
+<br>
+
+例如，这是一个 PHP 扩展包，其中包括调试器、语言服务和格式化程序：
+
+<br>
+
+```
+{
+  "extensionPack": [
+    "felixfbecker.php-debug",
+    "felixfbecker.php-intellisense",
+    "Kasik96.format-php"
+  ]
+}
+```
+
+<br>
+
+安装扩展包时，VS Code 现在也将安装其扩展依赖项。
+
+<br>
+
+扩展包应归类在扩展包市场类别中：
+
+<br>
+
+```
+{
+  "categories": ["Extension Packs"]
+}
+```
+
+<br>
+
+要创建扩展包，您可以使用 `yo code` Yeoman 生成器并选择 **New Extension Pack** 选项。有一个选项可以使用您当前安装在 VS Code 实例中的一组扩展来为包播种。通过这种方式，您可以轻松地使用您喜欢的扩展创建一个扩展包，将其发布到 Marketplace，并与他人共享。
+
+<br>
+
+扩展包不应与其捆绑的扩展有任何功能依赖关系，并且捆绑的扩展应该可以独立于包进行管理。如果一个扩展依赖于另一个扩展，则应该使用 `extensionDependencies` 属性声明该依赖。
+
+## Extension uninstall hook
+
+如果您的扩展在从 VS Code 卸载时需要进行一些清理，您可以在扩展的 `package.json` 中的 `scripts` 部分下将 `node` 脚本注册到卸载挂钩 `vscode:uninstall`。
+
+<br>
+
+```
+{
+  "scripts": {
+    "vscode:uninstall": "node ./out/src/lifecycle"
+  }
+}
+```
+
+<br>
+
+当从 VS Code 完全卸载扩展程序时，即在卸载扩展程序后重新启动（关闭和启动）VS Code 时，将执行此脚本。
+
+<br>
+
+> 注意：仅支持 Node.js 脚本。
+
+## Useful Node modules
+
+`npmjs` 上有几个 Node.js 模块可用于帮助编写 VS Code 扩展。您可以将这些包含在扩展的 `dependencies` 项部分中。
+
+- [vscode-nls](https://www.npmjs.com/package/vscode-nls) - 支持外部化和本地化。
+- [vscode-uri](https://www.npmjs.com/package/vscode-uri) - VS Code 及其扩展使用的 URI 实现。
+- [jsonc-parser](https://www.npmjs.com/package/jsonc-parser) - 一个扫描器和容错解析器，用于处理带有或不带有注释的 JSON。
+- [request-light](https://www.npmjs.com/package/request-light) - 具有代理支持的轻量级 Node.js 请求库。
+- [vscode-extension-telemetry](https://www.npmjs.com/package/vscode-extension-telemetry) - VS Code 扩展的一致遥测报告。
+- [vscode-languageclient](https://www.npmjs.com/package/vscode-languageclient) - 轻松集成遵循[语言服​​务器协议](https://microsoft.github.io/language-server-protocol)的语言服务器。
+
 ## 附录
 
 都看到这里了，还不点个赞吗？
