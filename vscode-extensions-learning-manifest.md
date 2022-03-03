@@ -285,8 +285,14 @@
     </tr>
     <tr>
         <td>Issues</td><td><code>bugs:url</code></td>
+    </tr>
+    <tr>
         <td>Repository</td><td><code>repository:url</code></td>
+    </tr>
+    <tr>
         <td>Homepage</td><td><code>homepage</code></td>
+    </tr>
+    <tr>
         <td>License</td><td><code>license</code></td>
     </tr>
 </table>

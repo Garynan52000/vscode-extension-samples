@@ -126,3 +126,5 @@ export function deactivate() {}
 - [VSCode 的构造及部件说明](https://juejin.cn/post/7068193667369926670/)
 - [VSCode 拓展清单中的贡献点](https://juejin.cn/post/7069682837955280926/)
 - [VSCode 拓展激活事件](https://juejin.cn/post/7069974001547739143/)
+- [VSCode 扩展清单](https://juejin.cn/post/7070693306497236999/)
+- [VSCode 内置命令](https://juejin.cn/post/7070805271030792228/)
