@@ -69,6 +69,121 @@ when 子句有一个键值对匹配运算符。表达式 `key =~ value` 将右�
 
 [此处的列表](https://code.visualstudio.com/api/references/when-clause-contexts#available-contexts)并不详尽，您可以通过在键盘快捷键编辑器中搜索和过滤找到其他 `when` 子句上下文（**Preferences: Open Keyboard Shortcuts**）或查看默认键绑定 JSON 文件（**Preferences: Open Default Keyboard Shortcuts (JSON)**）。
 
+<table>
+    <tr>
+        <th>Context name</th><th>True when</th>
+    </tr>
+    <tr>
+        <td colspan="2">编辑器相关</td>
+    </tr>
+    <tr>
+        <td><code>editorFocus</code></td><td>编辑器具有焦点，文本或小部件。</td>
+    </tr>
+    <tr>
+        <td><code>editorTextFocus</code></td><td>编辑器中的文本具有焦点（光标闪烁）。</td>
+    </tr>
+    <tr>
+        <td><code>textInputFocus</code></td><td>任何编辑器有焦点（常规编辑器、调试 REPL 等）。</td>
+    </tr>
+    <tr>
+        <td><code>inputFocus</code></td><td>任何文本输入区域有焦点（编辑器或文本框）。</td>
+    </tr>
+    <tr>
+        <td><code>editorHasSelection</code></td><td>在编辑器中选择文本。</td>
+    </tr>
+    <tr>
+        <td><code>editorHasMultipleSelections</code></td><td>选择了多个文本区域（多个光标）。</td>
+    </tr>
+    <tr>
+        <td><code>editorReadonly</code></td><td>编辑器是只读的。</td>
+    </tr>
+    <tr>
+        <td><code>editorLangId</code></td><td>当编辑器的关联 <a href="https://code.visualstudio.com/docs/languages/identifiers" target="_blank">language ID</a> 匹配时为真。示例：<code>"editorLangId == typescript"</code>。</td>
+    </tr>
+    <tr>
+        <td><code>isInDiffEditor</code></td><td>活动编辑器是差异编辑器。</td>
+    </tr>
+    <tr>
+        <td><code>isInEmbeddedEditor</code></td><td>当焦点位于嵌入式编辑器内时为真。</td>
+    </tr>
+    <tr>
+        <td colspan="2">操作系统相关</td>
+    </tr>
+    <tr>
+        <td><code>isLinux</code></td><td>操作系统是 Linux</td>
+    </tr>
+    <tr>
+        <td><code>isMac</code></td><td>操作系统是 Mac</td>
+    </tr>
+    <tr>
+        <td><code>isWindows</code></td><td>操作系统是 Windows</td>
+    </tr>
+    <tr>
+        <td><code>isWeb</code></td><td>从 Web 访问编辑器</td>
+    </tr>
+    <tr>
+        <td colspan="2">模式上下文</td>
+    </tr>
+    <tr>
+        <td><code>inSnippetMode</code></td><td>编辑器处于片段模式。</td>
+    </tr>
+    <tr>
+        <td><code>inQuickOpen</code></td><td>快速打开下拉菜单具有焦点。</td>
+    </tr>
+    <tr>
+        <td colspan="2">资源上下文</td>
+    </tr>
+    <tr>
+        <td><code>resourceScheme</code></td><td>当资源 Uri scheme 匹配时为真。示例：<code>"resourceScheme == file"</code></td>
+    </tr>
+    <tr>
+        <td><code>resourceFilename</code></td><td>当资源管理器或编辑器文件名匹配时为真。例子：<code>"resourceFilename == gulpfile.js"</code></td>
+    </tr>
+    <tr>
+        <td><code>resourceExtname</code></td><td>当资源管理器或编辑器文件扩展名匹配时为真。例子：<code>"resourceExtname == .js"</code></td>
+    </tr>
+    <tr>
+        <td><code>resourceDirname</code></td><td>当资源管理器或编辑器的资源绝对文件夹路径匹配时为真。例子：<code>"resourcePath == /users/alice/project/gulpfile.js"</code></td>
+    </tr>
+    <tr>
+        <td><code>resourceLangId</code></td><td>当资源管理器或编辑器标题 <a href="">language ID</a> 匹配时为真。例子：<code>"resourceLangId == markdown"</code></td>
+    </tr>
+    <tr>
+        <td><code>resourceLangId</code></td><td>当资源管理器或编辑器标题 <a href="">language ID</a> 匹配时为真。例子：<code>"resourceLangId == markdown"</code></td>
+    </tr>
+    <tr>
+        <td><code>isFileSystemResource</code></td><td>当资源管理器或编辑器文件是可以从文件系统提供程序处理的文件系统资源时为真</td>
+    </tr>
+    <tr>
+        <td><code>resourceSet</code></td><td>设置资源管理器或编辑器文件时为真</td>
+    </tr>
+    <tr>
+        <td><code>resource</code></td><td>Explorer 或编辑器文件的完整 Uri</td>
+    </tr>
+    <tr>
+        <td colspan="2">资源管理器上下文</td>
+    </tr>
+    <tr>
+        <td><code>explorerViewletVisible</code></td><td>如果资源管理器视图可见，则为真。</td>
+        <td><code>explorerViewletFocus</code></td><td>如果资源管理器视图具有键盘焦点，则为真。</td>
+        <td><code>filesExplorerFocus</code></td><td>如果文件资源管理器部分具有键盘焦点，则为真。</td>
+        <td><code>openEditorsFocus</code></td><td>如果 OPEN EDITORS 部分具有键盘焦点，则为真。</td>
+        <td><code>explorerResourceIsFolder</code></td><td>如果在资源管理器中选择了文件夹，则为真。</td>
+        <td><code>explorerResourceIsFolder</code></td><td>如果在资源管理器中选择了文件夹，则为真。</td>
+    </tr>
+    <tr>
+        <td colspan="2">编辑器小部件上下文</td>
+    </tr>
+    <tr>
+        <td><code>explorerViewletVisible</code></td><td>如果资源管理器视图可见，则为真。</td>
+        <td><code>explorerViewletFocus</code></td><td>如果资源管理器视图具有键盘焦点，则为真。</td>
+        <td><code>filesExplorerFocus</code></td><td>如果文件资源管理器部分具有键盘焦点，则为真。</td>
+        <td><code>openEditorsFocus</code></td><td>如果 OPEN EDITORS 部分具有键盘焦点，则为真。</td>
+        <td><code>explorerResourceIsFolder</code></td><td>如果在资源管理器中选择了文件夹，则为真。</td>
+        <td><code>explorerResourceIsFolder</code></td><td>如果在资源管理器中选择了文件夹，则为真。</td>
+    </tr>
+</table>
+
 ## 附录
 
 都看到这里了，还不点个赞吗？
