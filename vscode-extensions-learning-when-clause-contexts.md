@@ -165,9 +165,17 @@ when 子句有一个键值对匹配运算符。表达式 `key =~ value` 将右�
     </tr>
     <tr>
         <td><code>explorerViewletVisible</code></td><td>如果资源管理器视图可见，则为真。</td>
+    </tr>
+    <tr>
         <td><code>explorerViewletFocus</code></td><td>如果资源管理器视图具有键盘焦点，则为真。</td>
+    </tr>
+    <tr>
         <td><code>filesExplorerFocus</code></td><td>如果文件资源管理器部分具有键盘焦点，则为真。</td>
+    </tr>
+    <tr>
         <td><code>openEditorsFocus</code></td><td>如果 OPEN EDITORS 部分具有键盘焦点，则为真。</td>
+    </tr>
+    <tr>
         <td><code>explorerResourceIsFolder</code></td><td>如果在资源管理器中选择了文件夹，则为真。</td>
     </tr>
     <tr>
@@ -175,14 +183,32 @@ when 子句有一个键值对匹配运算符。表达式 `key =~ value` 将右�
     </tr>
     <tr>
         <td><code>findWidgetVisible</code></td><td>编辑器查找小部件可见。</td>
+    </tr>
+    <tr>
         <td><code>suggestWidgetVisible</code></td><td>建议小部件 (IntelliSense) 可见。</td>
+    </tr>
+    <tr>
         <td><code>suggestWidgetMultipleSuggestions</code></td><td>显示多个建议。</td>
+    </tr>
+    <tr>
         <td><code>renameInputVisible</code></td><td>重命名输入文本框可见。</td>
+    </tr>
+    <tr>
         <td><code>referenceSearchVisible</code></td><td>Peek References 预览窗口打开。</td>
+    </tr>
+    <tr>
         <td><code>inReferenceSearchEditor</code></td><td>Peek References peek 窗口编辑器具有焦点。</td>
+    </tr>
+    <tr>
         <td><code>config.editor.stablePeek</code></td><td>保持 peek 编辑器打开（由 <code>editor.stablePeek</code> 设置控制）。</td>
+    </tr>
+    <tr>
         <td><code>quickFixWidgetVisible</code></td><td>快速修复小部件可见。</td>
+    </tr>
+    <tr>
         <td><code>parameterHintsVisible</code></td><td>参数提示是可见的（由 editor.parameterHints.enabled 设置控制）。</td>
+    </tr>
+    <tr>
         <td><code>parameterHintsMultipleSignatures</code></td><td>显示多个参数提示。</td>
     </tr>
     <tr>
@@ -190,17 +216,29 @@ when 子句有一个键值对匹配运算符。表达式 `key =~ value` 将右�
     </tr>
     <tr>
         <td><code>debuggersAvailable</code></td><td>有适当的调试器扩展可用。</td>
+    </tr>
+    <tr>
         <td><code>inDebugMode</code></td><td>调试会话正在运行。</td>
+    </tr>
+    <tr>
         <td><code>debugState</code></td><td>活动调试器状态。可能的值是 <code>inactive</code>, <code>initializing</code>, <code>stopped</code>, <code>running</code>。</td>
+    </tr>
+    <tr>
         <td><code>debugType</code></td><td>当调试类型匹配时为真。示例：<code>"debugType == 'node'"</code>。</td>
+    </tr>
+    <tr>
         <td><code>inDebugRepl</code></td><td>焦点在调试控制台 REPL。</td>
     </tr>
     <tr>
         <td colspan="2">集成终端上下文</td>
     </tr>
     <tr>
+    <tr>
         <td><code>terminalFocus</code></td><td>集成终端具有焦点。</td>
+    </tr>
+    <tr>
         <td><code>terminalIsOpen</code></td><td>打开一个集成终端。</td>
+    </tr>
     </tr>
     <tr>
         <td colspan="2">时间线视图上下文</td>
@@ -399,6 +437,76 @@ vscode.commands.executeCommand('setContext', 'myExtension.showMyCommand', true);
 
 vscode.commands.executeCommand('setContext', 'myExtension.numberOfCoolOpenThings', 4);
 ```
+
+## 'in' 条件运算符
+
+`when` 子句的 `in` 运算符允许在另一个上下文 key's value 中动态查找上下文 key's value。例如，如果您想将上下文菜单命令添加到包含某种类型文件（或无法静态知道的文件）的文件夹中，您现在可以使用 `in` 运算符来实现它。
+
+<br>
+
+首先，确定哪些文件夹应该支持该命令，并将文件夹名称设置为一个数组。然后，使用 `setContext` 命令将数组转换为上下文 key：
+
+<br>
+
+```
+vscode.commands.executeCommand('setContext', 'ext.supportedFolders', [
+  'test',
+  'foo',
+  'bar'
+]);
+
+// or
+
+// 注意在这种情况下（使用对象），值无关紧要，它是基于对象中键的存在
+// The value must be of a simple type
+vscode.commands.executeCommand('setContext', 'ext.supportedFolders', {
+  test: true,
+  foo: 'anything',
+  bar: false
+});
+```
+
+<br>
+
+然后，在 `package.json` 中，您可以为 `explorer/context` 菜单添加菜单贡献：
+
+<br>
+
+```
+// 注意，这假设您已经定义了一个名为 ext.doSpecial 的命令
+"menus": {
+  "explorer/context": [
+    {
+      "command": "ext.doSpecial",
+      "when": "explorerResourceIsFolder && resourceFilename in ext.supportedFolders"
+    }
+  ]
+}
+```
+
+<br>
+
+在该示例中，我们获取 `resourceFilename` 的值（在本例中为文件夹的名称）并检查其是否存在于 `ext.supportedFolders` 的值中。如果存在，将显示菜单。这个强大的运算符应该允许更丰富的条件和动态贡献，以支持 `when` 子句，例如菜单、视图等。
+
+## 检查上下文 Keys 效用
+
+如果您想在运行时查看所有当前活动的上下文 keys，您可以使用 **Developer: Inspect Context Keys** 命令 (**Ctrl+Shift+P**)。 **Inspect Context Keys** 将在 VS Code 开发人员工具 **Console tab (Help > Toggle Developer Tools)** 中显示上下文 keys 及其 values。
+
+<br>
+
+当您运行 **Developer: Inspect Context Keys** 时，您的光标将突出显示 VS Code UI 中的元素，当您单击一个元素时，当前的上下文键及其状态将作为对象输出到控制台。
+
+<br>
+
+![Image](https://code.visualstudio.com/assets/api/references/when-clause-contexts/inspect-context-keys.png)
+
+<br>
+
+活动上下文键的列表很广泛，可能包含您已安装的扩展的自定义上下文键。
+
+<br>
+
+> 注意：某些上下文键供 VS Code 内部使用，将来可能会更改。
 
 ## 附录
 

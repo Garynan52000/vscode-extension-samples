@@ -128,3 +128,5 @@ export function deactivate() {}
 - [VSCode 拓展激活事件](https://juejin.cn/post/7069974001547739143/)
 - [VSCode 扩展清单](https://juejin.cn/post/7070693306497236999/)
 - [VSCode 内置命令](https://juejin.cn/post/7070805271030792228/)
+- [VSCode when 子句上下文](https://juejin.cn/post/7072621434605928462/)
+- [VSCode 产品图标参考](https://juejin.cn/post/7072645697320779812/)
